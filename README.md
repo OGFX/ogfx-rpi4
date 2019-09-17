@@ -112,6 +112,8 @@ Open yet another terminal and run
 
 Now leave this running for a couple of hours. Make sure that in the <code>jackd</code> terminal no XRUNs are reported. Also check the terminal running <code>vcgencmd</code> from time to time to check whether your Rpi4 has adequate cooling. Ideally you don't want the temperature maxing out around 60 degrees to have some headroom for really hot summer days (at 80 degrees the cpu gets throttled ruining our RT-performance).
 
+Once you are sufficiently satisfied that the system is stable, kill all three processes.
+
 # Setup SYSTEMD Lingering User Session
 
 We want our effects processor to start up once the device is powered. And we also want to run everything as the <code>alarm</code> user. To start long running services and processes we can make use of <code>systemd</code>'s user service handling. To enable user services started independent of logging in manually we have to enable <code>lingering</code>:
