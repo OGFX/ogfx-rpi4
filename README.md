@@ -39,6 +39,8 @@ We have prepared a PKGBUILD that has the required patches. It's found in the <co
 * <code>sudo pacman -U linux-raspberrypi4-4.19.69-2-armv7h.pkg.tar.xz</code>
 * <code>sudo reboot</code>
 
+While the <code>makepkg</code> command is running it will ask you for newly added configuration settings. Make sure to set the kernel's preemption model to <code>RT-PREEMPT (full)</code>.
+
 Once rebooted checkout the output of e.g. <code>htop</code> (install it if necessary). Hit <code>F6</code>, select <code>PRIORITY</code> and you should now see some threads called <code>irq/53-PCIe PME</code>, and similar. These are the kernel IRQ handler threads which we want from our RT-PREEMPT system and which we will tune a little in the next step. But before that create a file calle <code>/etc/modprobe.d/00-snd-usb.conf</code> with the following content:
 
 <pre>
