@@ -74,6 +74,12 @@ We want to disable all CPU frequency scaling to make the system behave more pred
 for n in 0 1 2 3; do echo performance > /sys/devices/system/cpu/cpu"$n"/cpufreq/scaling_governor; done
 </pre>
 
+Make sure it has a <code>#!/bin/bash</code> shebang at the top of the file and that it is executable. Then enable the <code>rc-local</code> service:
+
+<code>sudo systemctl enable rc-local</code>
+
+and either reboot or start it with <code>systemctl start...</code>.
+
 # Setup RT Permissions 
 
 Add the <code>alarm</code> user to the <code>realtime</code> group using
