@@ -20,6 +20,9 @@ You will need to install the following packages:
 * <code>htop</code>
 * <code>jack2</code>
 * <code>rtirq</code>
+* <code>realtime-privileges</code>
+* <code>stress</code>
+* <code>tmux</code>
 
 Add the <code>alarm</code> user to the <cide>wheel</code> group. Also change the <code>root</code> user's password to something of your liking.
 
@@ -42,7 +45,7 @@ Once rebooted checkout the output of e.g. <code>htop</code> (install it if neces
 options snd-usb-audio max_packs=4 max_packs_hs=4 max_urbs=12 sync_urbs=4 max_queue=18
 </pre>
 
-This tunes the parameters introduced by the Low-Latency USB patch.
+This tunes the parameters introduced by the Low-Latency USB patch. Either unload and reload the snd-usb-audio module (using <code>rmmod</code> and <code>modprobe</code> or just reboot once more..
 
 # Setup RTIRQ
 
@@ -62,3 +65,37 @@ And enable the service with
 <code>sudo systemctl enable rtirq</code>
 
 and either reboot or start the service now (with <code>systemctl start</code>). Check with <code>htop</code> whether the <code>irq/54-xhci_hcd</code> kernel thread has priority <code>-91</code>. If so <code>rtirq</code> is doing its thing correctly.
+
+# Setup the CPU Frequency Scaling
+
+We want to disable all CPU frequency scaling to make the system behave more predictably. Edit the file <code>/etc/rc.local</code> and add into it:
+
+<pre>
+for n in 0 1 2 3; do echo performance > /sys/devices/system/cpu/cpu"$n"/cpufreq/scaling_governor; done
+</pre>
+
+# Setup RT Permissions 
+
+Add the <code>alarm</code> user to the <code>realtime</code> group using
+
+<code>sudo gpasswd -a alarm realtime</code>
+
+And relogin that user.
+
+# Setup JACK2
+
+Now it's time to plugin your USB audio class 2.0 device (for example the Focusrite 2i2 2nd gen, or Tascam 2x2, etc). It should appear in <code>/proc/asound/cards</code>
+
+<pre>
+$ cat /proc/asound/cards 
+ 0 [USB            ]: USB-Audio - Scarlett 2i2 USB
+                      Focusrite Scarlett 2i2 USB at usb-0000:01:00.0-1.2, high speed
+</pre>
+
+Run
+
+<code>jackd -R -P 80 -S -d alsa -d hw:USB -p 64 -n 2</code>
+
+It should startup fine (some warnings about libFFADO are to be ignored, they do not matter). Now open another terminal on the Rpi4 and run
+
+<code>stress -c 4</code>
