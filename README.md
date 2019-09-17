@@ -126,3 +126,11 @@ Some versions of <code>systemd</code> shipped with Alarm are buggy and you have 
 sudo mkdir -p /var/lib/systemd/linger
 sudo touch /var/lib/systemd/linger/alarm
 </pre>
+
+# TODO
+
+* Start <code>jackd</code> as lingering user service once the USB soundcard connects
+* Start <code>mod-host</code>
+* Start <code>jack-led-peak</code> instances
+* Configure <code>wifi0</code> in AP/managed combined mode so one can use smartphone to connec to...
+* Start web service to control <code>mod-host</code>
