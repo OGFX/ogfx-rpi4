@@ -105,3 +105,22 @@ Run
 It should startup fine (some warnings about libFFADO are to be ignored, they do not matter). Now open another terminal on the Rpi4 and run
 
 <code>stress -c 4</code>
+
+Open yet another terminal and run
+
+<code>sudo watch /opt/vc/bin/vcgencmd measure_temp</code>
+
+Now leave this running for a couple of hours. Make sure that in the <code>jackd</code> terminal no XRUNs are reported. Also check the terminal running <code>vcgencmd</code> from time to time to check whether your Rpi4 has adequate cooling. Ideally you don't want the temperature maxing out around 60 degrees to have some headroom for really hot summer days (at 80 degrees the cpu gets throttled ruining our RT-performance).
+
+# Setup SYSTEMD Lingering User Session
+
+We want our effects processor to start up once the device is powered. And we also want to run everything as the <code>alarm</code> user. To start long running services and processes we can make use of <code>systemd</code>'s user service handling. To enable user services started independent of logging in manually we have to enable <code>lingering</code>:
+
+<code>sudo loginctl enable-linger alarm</code>
+
+Some versions of <code>systemd</code> shipped with Alarm are buggy and you have to run the following command manually:
+
+<pre>
+sudo mkdir -p /var/lib/systemd/linger
+sudo touch /var/lib/systemd/linger/alarm
+</pre>
