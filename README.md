@@ -2,12 +2,6 @@
 
 The Open (Guitar) Audio Effects Processor
 
-# Rationale
-
-Since the new Raspberry Pi4 dropped we were amazed to find that it finally offers a working USB3 host which can drive an USB class audio 2.0 device. This repository serves as a collection of knowledge and software snippets to setup an Rpi4 as an open source (guitar) audio effects processor using a USB audio class 2.0 audio interface.
-
-The base distribution is Archlinux-Arm (alarm) but the methods should be, in principle, applicable to any distribution for the Rpi4
-
 # Preliminaries
 
 Install the alarm version for raspberrypi4 on your Rpi4 and then follow the instructions below. 
